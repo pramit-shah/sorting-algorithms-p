@@ -1,0 +1,30 @@
+# Source files
+src/
+!src/cli.ts
+
+# Development files
+.devcontainer/
+.github/
+.git/
+*.md
+!README.md
+
+# Build artifacts
+node_modules/
+.vite/
+pids/
+
+# Config files
+.gitignore
+.spark-workbench-id
+vite.config.ts
+tsconfig.json
+tsconfig.cli.json
+tailwind.config.js
+components.json
+runtime.config.json
+spark.meta.json
+
+# Assets and UI
+index.html
+theme.json

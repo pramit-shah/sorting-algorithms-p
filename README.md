@@ -1,22 +1,88 @@
-# ✨ Welcome to Your Spark Template!
-You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
+# Pylabs Code Translator - CLI Tool
 
-This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
+A comprehensive code translation and analysis tool for sorting algorithms, featuring algorithm translations, configuration generation, and codebase analysis.
 
-🚀 What's Inside?
-- A clean, minimal Spark environment
-- Pre-configured for local development
-- Ready to scale with your ideas
-  
-🧠 What Can You Do?
+## 🚀 Features
 
-Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
+- **Algorithm Translations**: Professional C++ and Java implementations of sorting algorithms
+- **Configuration Generator**: Interactive tool for creating sorter configurations
+- **Codebase Analyzer**: Smart recommendations based on your project dependencies
+- **CLI Tool**: Run globally via `npx pylabs-sort`
 
-🧹 Just Exploring?
-No problem! If you were just checking things out and don’t need to keep this code:
+## 📦 Installation & Usage
 
-- Simply delete your Spark.
-- Everything will be cleaned up — no traces left behind.
+### Run via npx (Recommended)
+
+```bash
+npx pylabs-sort
+```
+
+### Install Globally
+
+```bash
+npm install -g pylabs-sort
+pylabs-sort
+```
+
+### Build the CLI
+
+To build the CLI tool from source:
+
+```bash
+npm run build:cli
+```
+
+This will:
+1. Compile the TypeScript CLI to JavaScript
+2. Add the shebang (`#!/usr/bin/env node`) to the output
+3. Make the file executable
+4. Place the compiled CLI in `./dist/cli.js`
+
+### Test Locally
+
+After building, you can test the CLI locally:
+
+```bash
+node dist/cli.js
+```
+
+Or link it globally for testing:
+
+```bash
+npm link
+pylabs-sort
+```
+
+## 🛠️ CLI Features
+
+When you run `pylabs-sort`, you'll be presented with three options:
+
+### 1. Generate sorter_config.json
+
+Create a configuration file for your sorting avenue:
+
+- **ai_high_performance**: Optimized for AI workloads and maximum speed
+  - Functions: Radix Sort, Quicksort
+  - Use cases: ML preprocessing, high-frequency trading, real-time data processing
+
+- **general_production**: Stable, reliable sorting for production environments
+  - Functions: Timsort
+  - Use cases: Enterprise backends, database sorting, general web services
+
+### 2. Analyze Codebase
+
+Automatically scans your project to recommend the best sorting configuration:
+
+- **AI/Data Science Detection**: Recommends Linear-time Sorts (Radix Sort, Counting Sort)
+  - Detects: tensorflow, pytorch, numpy, pandas, scikit-learn
+  - Benefit: O(n + k) linear time performance
+
+- **Web Production Detection**: Recommends Hybrid Sorts (Timsort)
+  - Detects: express, fastify, koa, next, react
+  - Benefit: Stable O(n log n) optimized for real-world data
+
+- **Default**: Recommends Quicksort
+  - Benefit: Cache-efficient, in-place O(1) space complexity
 
 ## 🎯 Sorter Factory
 
@@ -52,6 +118,57 @@ Retrieves the allowed sorting algorithms for a specific use case.
 - **Returns**: Object mapping algorithm names to sorting functions
 - **Throws**: Error if invalid avenue is provided
 
-📄 License For Spark Template Resources 
+## 📝 Package.json Configuration
+
+The project is configured as a CLI tool with the following key settings:
+
+```json
+{
+  "name": "pylabs-sort",
+  "version": "1.0.0",
+  "bin": {
+    "pylabs-sort": "./dist/cli.js"
+  },
+  "scripts": {
+    "build:cli": "tsc --project tsconfig.cli.json && ...",
+    "prepublishOnly": "npm run build:cli"
+  }
+}
+```
+
+### Key Configuration Details
+
+- **bin**: Maps the `pylabs-sort` command to the compiled CLI
+- **build:cli**: Compiles TypeScript with Node.js-specific settings
+- **prepublishOnly**: Automatically builds the CLI before publishing to npm
+- **private: false**: Allows publishing to npm registry
+
+## 🔧 Development
+
+### Project Structure
+
+```
+pylabs-sort/
+├── src/
+│   ├── cli.ts                 # CLI entry point
+│   ├── App.tsx                # Web UI
+│   └── components/
+│       ├── ConfigGenerator.tsx
+│       └── CodebaseAnalyzer.tsx
+├── dist/
+│   └── cli.js                 # Compiled CLI (generated)
+├── tsconfig.json              # Main TypeScript config
+├── tsconfig.cli.json          # CLI-specific TypeScript config
+└── package.json
+```
+
+### Build Scripts
+
+- `npm run dev` - Start development server for web UI
+- `npm run build` - Build web application
+- `npm run build:cli` - Build CLI tool
+- `npm run lint` - Lint code
+
+## 📄 License
 
 The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.

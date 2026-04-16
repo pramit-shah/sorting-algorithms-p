@@ -1,12 +1,36 @@
 {
-    "name": "spark-template",
-    "private": true,
-    "version": "0.0.0",
+    "name": "pylabs-sort",
+    "private": false,
+    "version": "1.0.0",
+    "description": "A comprehensive CLI tool for algorithm translation, configuration generation, and codebase analysis for sorting algorithms",
     "type": "module",
+    "bin": {
+        "pylabs-sort": "./dist/cli.js"
+    },
+    "main": "./dist/cli.js",
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "sorting",
+        "algorithms",
+        "cli",
+        "code-translation",
+        "quicksort",
+        "timsort",
+        "radix-sort",
+        "pylabs"
+    ],
+    "author": "Pylabs",
+    "license": "MIT",
     "scripts": {
         "dev": "vite",
         "kill": "fuser -k 5000/tcp",
         "build": "tsc -b --noCheck && vite build",
+        "build:cli": "tsc --project tsconfig.cli.json && node -e \"const fs=require('fs');const path='./dist/cli.js';let content=fs.readFileSync(path,'utf8');if(!content.startsWith('#!/usr/bin/env node')){fs.writeFileSync(path,'#!/usr/bin/env node\\n'+content);}\" && chmod +x dist/cli.js",
+        "prepublishOnly": "npm run build:cli",
         "lint": "eslint .",
         "optimize": "vite optimize",
         "preview": "vite preview"

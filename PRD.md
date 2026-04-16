@@ -1,6 +1,6 @@
 # Planning Guide
 
-A professional code translation tool that converts TypeScript/Python sorting algorithms into optimized C++ (STL) and Java implementations, with an integrated configuration generator for sorter_factory.ts. Displays side-by-side comparisons with syntax highlighting, optimization notes, copy functionality, and an interactive web-based CLI tool for generating sorter_config.json files.
+A professional code translation tool that converts TypeScript/Python sorting algorithms into optimized C++ (STL) and Java implementations, with an integrated configuration generator for sorter_factory.ts. Displays side-by-side comparisons with syntax highlighting, optimization notes, copy functionality, and includes both an interactive web-based interface and a standalone Node.js CLI tool (pylabs-sort) for generating sorter_config.json files.
 
 **Experience Qualities**:
 1. **Professional** - Clean, technical interface that feels like a developer tool for production environments
@@ -8,9 +8,16 @@ A professional code translation tool that converts TypeScript/Python sorting alg
 3. **Educational** - Clear documentation and examples help users understand translation patterns and configuration options
 
 **Complexity Level**: Complex Application (advanced functionality, likely with multiple views)
-This application requires multiple algorithm implementations, code translation display, configuration file generation with persistent state management, multiple tab views for different content types, and integration with the sorter_factory.ts system.
+This application requires multiple algorithm implementations, code translation display, configuration file generation with persistent state management, multiple tab views for different content types, integration with the sorter_factory.ts system, and a compiled CLI tool that can be run globally via npx.
 
 ## Essential Features
+
+### CLI Tool (Node.js Standalone)
+- **Functionality**: Standalone Node.js CLI tool that can be run globally via `npx pylabs-sort` or installed with `npm install -g pylabs-sort`. Provides terminal-based interactive menu for configuration generation and codebase analysis.
+- **Purpose**: Allow developers to use the tool directly from the command line without a web browser, integrating seamlessly into their development workflow
+- **Trigger**: User runs `npx pylabs-sort` or `pylabs-sort` command in terminal
+- **Progression**: Launch CLI → Display main menu (Generate config, Analyze codebase, Exit) → User selects option → For config: select avenue via numbered menu → Generate and save sorter_config.json to current directory → For analyze: scan package.json → Display recommendations with terminal formatting → Exit
+- **Success criteria**: Executable via npx, proper shebang in compiled output, interactive readline prompts, file system operations (read package.json, write sorter_config.json), formatted terminal output with box drawing characters, error handling, works on Unix and Windows systems, properly configured in package.json with bin field and build:cli script
 
 ### Codebase Analyzer
 - **Functionality**: Intelligent recommendation engine that scans package.json dependencies to analyze the user's project and recommend optimal sorting algorithms based on detected patterns

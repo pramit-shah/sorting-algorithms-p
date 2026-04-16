@@ -9,15 +9,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { VisualizationCanvas } from '@/components/VisualizationCanvas';
+import { TreeVisualization } from '@/components/TreeVisualization';
+import { GraphVisualization } from '@/components/GraphVisualization';
 import { ControlPanel } from '@/components/ControlPanel';
 import { MetricsDisplay } from '@/components/MetricsDisplay';
 import { algorithms, getAlgorithmsByCategory } from '@/lib/algorithms';
 import { sortingAlgorithms } from '@/lib/sorting';
+import { bstInsert } from '@/lib/bst';
+import { createGraph, dijkstraShortestPath, bfsTraversal } from '@/lib/graph';
 import { VisualizationStep, AlgorithmCategory } from '@/lib/types';
 import { SlidersHorizontal, ChartBar } from '@phosphor-icons/react';
 import { Toaster, toast } from 'sonner';
@@ -82,21 +85,49 @@ function App() {
   }, [currentStep, steps]);
 
   const handleVisualize = () => {
-    if (array.length < 2) {
-      toast.error('Array must have at least 2 elements');
-      return;
-    }
-
-    const sortFunction = sortingAlgorithms[selectedAlgorithmId];
-    if (sortFunction) {
-      const visualizationSteps = sortFunction(array);
+    if (selectedAlgorithmId.startsWith('bst-')) {
+      if (array.length < 1) {
+        toast.error('Need at least 1 value for BST');
+        return;
+      }
+      const visualizationSteps = bstInsert(array);
       setSteps(visualizationSteps);
       setCurrentStep(0);
       setComparisons(0);
       setSwaps(0);
-      toast.success('Visualization ready!');
+      toast.success('BST Visualization ready!');
+    } else if (selectedAlgorithmId.startsWith('graph-')) {
+      const graph = createGraph(6);
+      let visualizationSteps: VisualizationStep[] = [];
+
+      if (selectedAlgorithmId === 'graph-dijkstra') {
+        visualizationSteps = dijkstraShortestPath(graph, 'node-0', 'node-5');
+      } else if (selectedAlgorithmId === 'graph-bfs') {
+        visualizationSteps = bfsTraversal(graph, 'node-0');
+      }
+
+      setSteps(visualizationSteps);
+      setCurrentStep(0);
+      setComparisons(0);
+      setSwaps(0);
+      toast.success('Graph Visualization ready!');
     } else {
-      toast.error('Algorithm not implemented yet');
+      if (array.length < 2) {
+        toast.error('Array must have at least 2 elements');
+        return;
+      }
+
+      const sortFunction = sortingAlgorithms[selectedAlgorithmId];
+      if (sortFunction) {
+        const visualizationSteps = sortFunction(array);
+        setSteps(visualizationSteps);
+        setCurrentStep(0);
+        setComparisons(0);
+        setSwaps(0);
+        toast.success('Visualization ready!');
+      } else {
+        toast.error('Algorithm not implemented yet');
+      }
     }
   };
 
@@ -154,16 +185,58 @@ function App() {
   const categoryAlgorithms = getAlgorithmsByCategory(category);
   const maxValue = Math.max(...array, 1);
 
+  const renderVisualization = () => {
+    if (steps.length === 0) {
+      return (
+        <div className="h-full flex items-center justify-center">
+          <div className="text-center space-y-2">
+            <ChartBar size={48} className="mx-auto text-muted-foreground" />
+            <p className="text-muted-foreground">
+              Select an algorithm and click Visualize to start
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    const currentStepData = steps[currentStep];
+
+    if (currentStepData.tree !== undefined) {
+      return (
+        <TreeVisualization
+          tree={currentStepData.tree}
+          description={currentStepData.description}
+        />
+      );
+    }
+
+    if (currentStepData.graph) {
+      return (
+        <GraphVisualization
+          graph={currentStepData.graph}
+          description={currentStepData.description}
+        />
+      );
+    }
+
+    return (
+      <VisualizationCanvas
+        step={currentStepData}
+        maxValue={maxValue}
+      />
+    );
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Toaster />
       <div className="container mx-auto p-6 space-y-6">
         <header className="text-center space-y-2 pb-4">
           <h1 className="text-4xl font-bold font-mono tracking-tight">
-            Pylabs Sorting Visualizer
+            Pylabs Algorithm Visualizer
           </h1>
           <p className="text-muted-foreground">
-            Interactive visualization of comparison, linear, and hybrid sorting algorithms
+            Interactive visualization of sorting, data structures, and graph algorithms
           </p>
         </header>
 
@@ -172,7 +245,7 @@ function App() {
             <TabsTrigger value="comparison">Comparison Sorts</TabsTrigger>
             <TabsTrigger value="linear">Linear Sorts</TabsTrigger>
             <TabsTrigger value="hybrid">Hybrid Sorts</TabsTrigger>
-            <TabsTrigger value="data-structures" disabled>
+            <TabsTrigger value="data-structures">
               Data Structures
             </TabsTrigger>
           </TabsList>
@@ -186,42 +259,46 @@ function App() {
                       <div>
                         <CardTitle className="font-mono">Algorithm Selection</CardTitle>
                         <CardDescription>
-                          Choose an algorithm and configure the array
+                          Choose an algorithm and configure the input
                         </CardDescription>
                       </div>
-                      <Dialog open={configDialogOpen} onOpenChange={setConfigDialogOpen}>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" size="icon">
-                            <SlidersHorizontal />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle className="font-mono">Array Configuration</DialogTitle>
-                            <DialogDescription>
-                              Configure the array size and regenerate
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="space-y-4 py-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="array-size">
-                                Array Size: {arraySize}
-                              </Label>
-                              <Slider
-                                id="array-size"
-                                value={[arraySize]}
-                                min={5}
-                                max={50}
-                                step={1}
-                                onValueChange={(value) => setArraySize(value[0])}
-                              />
-                            </div>
-                            <Button onClick={handleApplyConfig} className="w-full">
-                              Apply & Generate
+                      {!selectedAlgorithmId.startsWith('graph-') && (
+                        <Dialog open={configDialogOpen} onOpenChange={setConfigDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="icon">
+                              <SlidersHorizontal />
                             </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="font-mono">
+                                {selectedAlgorithmId.startsWith('bst-') ? 'Tree' : 'Array'} Configuration
+                              </DialogTitle>
+                              <DialogDescription>
+                                Configure the {selectedAlgorithmId.startsWith('bst-') ? 'tree values' : 'array size'} and regenerate
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="array-size">
+                                  {selectedAlgorithmId.startsWith('bst-') ? 'Value Count' : 'Array Size'}: {arraySize}
+                                </Label>
+                                <Slider
+                                  id="array-size"
+                                  value={[arraySize]}
+                                  min={5}
+                                  max={50}
+                                  step={1}
+                                  onValueChange={(value) => setArraySize(value[0])}
+                                />
+                              </div>
+                              <Button onClick={handleApplyConfig} className="w-full">
+                                Apply & Generate
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -251,21 +328,7 @@ function App() {
 
                 <Card className="h-96">
                   <CardContent className="h-full p-6">
-                    {steps.length > 0 ? (
-                      <VisualizationCanvas
-                        step={steps[currentStep]}
-                        maxValue={maxValue}
-                      />
-                    ) : (
-                      <div className="h-full flex items-center justify-center">
-                        <div className="text-center space-y-2">
-                          <ChartBar size={48} className="mx-auto text-muted-foreground" />
-                          <p className="text-muted-foreground">
-                            Select an algorithm and click Visualize to start
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                    {renderVisualization()}
                   </CardContent>
                 </Card>
 

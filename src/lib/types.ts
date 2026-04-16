@@ -3,12 +3,47 @@ export type AlgorithmCategory = 'comparison' | 'linear' | 'hybrid' | 'data-struc
 export type BarState = 'default' | 'comparing' | 'swapping' | 'sorted' | 'pivot';
 
 export interface VisualizationStep {
-  array: number[];
+  array: (number | string)[];
   comparing?: number[];
   swapping?: number[];
   pivot?: number;
   sorted?: number[];
   description: string;
+  tree?: TreeNode | null;
+  graph?: GraphState;
+}
+
+export interface TreeNode {
+  value: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+  id: string;
+  highlighted?: boolean;
+  isNewNode?: boolean;
+}
+
+export interface GraphNode {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+  highlighted?: boolean;
+  visited?: boolean;
+  distance?: number;
+}
+
+export interface GraphEdge {
+  from: string;
+  to: string;
+  weight: number;
+  highlighted?: boolean;
+  inPath?: boolean;
+}
+
+export interface GraphState {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  adjacencyList?: Record<string, { nodeId: string; weight: number }[]>;
 }
 
 export interface AlgorithmMetrics {

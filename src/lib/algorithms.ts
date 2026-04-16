@@ -155,6 +155,62 @@ export const algorithms: AlgorithmInfo[] = [
     stable: false,
     useCase: 'C++ STL sort, general-purpose with worst-case guarantee',
   },
+  {
+    id: 'bst-insert',
+    name: 'BST Insertion',
+    category: 'data-structures',
+    description: 'Binary Search Tree optimized for decision trees in machine learning. Inserts values maintaining BST property where left subtree contains smaller values and right contains larger.',
+    timeComplexity: {
+      best: 'O(log n)',
+      average: 'O(log n)',
+      worst: 'O(n)',
+    },
+    spaceComplexity: 'O(n)',
+    stable: true,
+    useCase: 'Decision trees, sorted data storage, range queries',
+  },
+  {
+    id: 'bst-traverse',
+    name: 'BST In-Order Traversal',
+    category: 'data-structures',
+    description: 'Traverses binary search tree in sorted order (left-root-right). Produces values in ascending order for a valid BST.',
+    timeComplexity: {
+      best: 'O(n)',
+      average: 'O(n)',
+      worst: 'O(n)',
+    },
+    spaceComplexity: 'O(h)',
+    stable: true,
+    useCase: 'Retrieving sorted data, tree validation, range queries',
+  },
+  {
+    id: 'graph-dijkstra',
+    name: 'Dijkstra Shortest Path',
+    category: 'data-structures',
+    description: 'Finds shortest path in weighted graph using adjacency list. Optimized for routing algorithms and navigation systems with non-negative edge weights.',
+    timeComplexity: {
+      best: 'O((V + E) log V)',
+      average: 'O((V + E) log V)',
+      worst: 'O((V + E) log V)',
+    },
+    spaceComplexity: 'O(V)',
+    stable: true,
+    useCase: 'GPS navigation, network routing, shortest path problems',
+  },
+  {
+    id: 'graph-bfs',
+    name: 'Breadth-First Search',
+    category: 'data-structures',
+    description: 'Graph traversal using adjacency list, exploring nodes level by level. Finds shortest path in unweighted graphs.',
+    timeComplexity: {
+      best: 'O(V + E)',
+      average: 'O(V + E)',
+      worst: 'O(V + E)',
+    },
+    spaceComplexity: 'O(V)',
+    stable: true,
+    useCase: 'Level-order traversal, shortest unweighted path, connectivity',
+  },
 ];
 
 export const getAlgorithmsByCategory = (category: string) => {

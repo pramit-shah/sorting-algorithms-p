@@ -1,6 +1,6 @@
 # Planning Guide
 
-An interactive web-based sorting algorithm visualizer and educational platform that demonstrates comparison sorts, linear sorts, hybrid sorts, and fundamental data structures with real-time visual animations.
+An interactive web-based algorithm visualizer and educational platform that demonstrates comparison sorts, linear sorts, hybrid sorts, binary search trees, and graph algorithms with real-time visual animations.
 
 **Experience Qualities**:
 1. **Educational** - Clear visual feedback helps users understand how different sorting algorithms work step-by-step
@@ -20,11 +20,11 @@ This application requires multiple algorithm implementations, real-time visualiz
 - **Success criteria**: Smooth animations, accurate algorithm implementations, clear visual distinction between compared/swapped elements
 
 ### Algorithm Categories
-- **Functionality**: Organize algorithms into comparison sorts (bubble, quick, merge, heap), linear sorts (counting, radix, bucket), hybrid sorts (timsort, introsort), and data structures (stack, queue, heap)
-- **Purpose**: Mirror the Python project structure and help users understand algorithm classifications
-- **Trigger**: User navigates between category tabs or cards
+- **Functionality**: Organize algorithms into comparison sorts (bubble, quick, merge, heap), linear sorts (counting, radix, bucket), hybrid sorts (timsort, introsort), and data structures (binary search tree insertion/traversal, Dijkstra shortest path, BFS)
+- **Purpose**: Provide comprehensive algorithm education across multiple domains
+- **Trigger**: User navigates between category tabs
 - **Progression**: View categories → Select category → Browse algorithms → Read description → Start visualization
-- **Success criteria**: Clear categorization, easy navigation, descriptive information for each algorithm
+- **Success criteria**: Clear categorization, easy navigation, descriptive information for each algorithm, specialized visualizations for trees and graphs
 
 ### Playback Controls
 - **Functionality**: Control animation speed, pause/resume, step forward/backward, and reset

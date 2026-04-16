@@ -33,7 +33,8 @@ export function VisualizationCanvas({
     <div className="w-full h-full flex flex-col gap-4">
       <div className="flex-1 flex items-end justify-center gap-0.5 px-4">
         {step.array.map((value, index) => {
-          const height = (value / maxValue) * 100;
+          const numValue = typeof value === 'number' ? value : 0;
+          const height = (numValue / maxValue) * 100;
           return (
             <motion.div
               key={index}

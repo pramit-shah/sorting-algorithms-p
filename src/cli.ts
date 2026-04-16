@@ -92,6 +92,21 @@ const DATA_STRUCTURE_PATTERNS = {
     classification: 'Graph (Mapping/Navigation/Routing)',
     recommendedKit: 'BFS/DFS Paradigms',
   },
+  directedGraph: {
+    keywords: ['DAG', 'directed acyclic graph', 'topological', 'dependency graph', 'task scheduler', 'build system', 'package manager'],
+    classification: 'Directed Graph (Dependency Resolution)',
+    recommendedKit: 'Topological Sort (Specialized Sorts)',
+  },
+  concurrentProcessing: {
+    keywords: ['Worker', 'WebWorker', 'parallel', 'thread', 'multithread', 'concurrent', 'Promise.all', 'async/await'],
+    classification: 'Concurrent/Parallel Processing',
+    recommendedKit: 'Concurrent Sorts Kit (Bitonic/Batcher/Samplesort)',
+  },
+  stringProcessing: {
+    keywords: ['string sort', 'lexicographic', 'alphabetical', 'String.sort', 'localeCompare', 'text processing'],
+    classification: 'String Sorting',
+    recommendedKit: 'Radix Sort MSD (Distribution Sorts)',
+  },
   standardCollections: {
     keywords: ['Array', 'List', 'HashMap', 'HashTable', 'Dictionary', 'vector', 'ArrayList', 'LinkedList', 'cache', 'database', 'index'],
     classification: 'Standard Collections (Database/Cache)',

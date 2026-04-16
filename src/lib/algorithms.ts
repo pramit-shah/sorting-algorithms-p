@@ -19,7 +19,7 @@ export const algorithms: AlgorithmInfo[] = [
     id: 'quick-sort',
     name: 'Quick Sort',
     category: 'comparison',
-    description: 'Divides the array using a pivot element, partitions around the pivot, and recursively sorts the sub-arrays.',
+    description: 'Optimized with median-of-three pivot selection and insertion sort for small subarrays. Divides the array using a pivot element, partitions around the pivot, and recursively sorts the sub-arrays.',
     timeComplexity: {
       best: 'O(n log n)',
       average: 'O(n log n)',
@@ -89,7 +89,7 @@ export const algorithms: AlgorithmInfo[] = [
     id: 'counting-sort',
     name: 'Counting Sort',
     category: 'linear',
-    description: 'Counts the occurrences of each unique element and uses arithmetic to determine positions.',
+    description: 'Stable counting sort with support for negative numbers. Counts the occurrences of each unique element and uses arithmetic to determine positions.',
     timeComplexity: {
       best: 'O(n + k)',
       average: 'O(n + k)',
@@ -103,7 +103,7 @@ export const algorithms: AlgorithmInfo[] = [
     id: 'radix-sort',
     name: 'Radix Sort',
     category: 'linear',
-    description: 'Sorts numbers by processing individual digits, starting from least significant to most significant.',
+    description: 'LSD (Least Significant Digit) radix sort optimized for integers. Sorts numbers by processing individual digits from least to most significant.',
     timeComplexity: {
       best: 'O(d × (n + k))',
       average: 'O(d × (n + k))',
@@ -131,7 +131,7 @@ export const algorithms: AlgorithmInfo[] = [
     id: 'tim-sort',
     name: 'Tim Sort',
     category: 'hybrid',
-    description: 'Hybrid of merge sort and insertion sort, optimized for real-world data with runs.',
+    description: 'Production-grade hybrid combining merge sort and binary insertion sort. Features natural run detection and galloping mode optimization for real-world data patterns.',
     timeComplexity: {
       best: 'O(n)',
       average: 'O(n log n)',
@@ -145,7 +145,7 @@ export const algorithms: AlgorithmInfo[] = [
     id: 'intro-sort',
     name: 'Intro Sort',
     category: 'hybrid',
-    description: 'Begins with quick sort, switches to heap sort when recursion depth exceeds a limit.',
+    description: 'Adaptive hybrid algorithm using quicksort with depth limit monitoring. Automatically switches to heapsort when recursion depth is excessive, with insertion sort for small subarrays.',
     timeComplexity: {
       best: 'O(n log n)',
       average: 'O(n log n)',

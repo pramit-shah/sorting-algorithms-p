@@ -1,6 +1,6 @@
 # Planning Guide
 
-An interactive web-based algorithm visualizer and educational platform that demonstrates comparison sorts, linear sorts, hybrid sorts, binary search trees, and graph algorithms with real-time visual animations.
+A professional code translation tool that converts TypeScript/Python sorting algorithms into optimized C++ (STL) and Java implementations. Displays side-by-side comparisons with syntax highlighting, optimization notes, and copy functionality for developers translating algorithms across languages.
 
 **Experience Qualities**:
 1. **Educational** - Clear visual feedback helps users understand how different sorting algorithms work step-by-step

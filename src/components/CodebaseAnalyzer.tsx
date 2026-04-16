@@ -3,15 +3,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { MagnifyingGlass, CheckCircle, Warning, Info, Sparkle } from '@phosphor-icons/react';
+import { MagnifyingGlass, CheckCircle, Warning, Info, Sparkle, FileCode, Database, TreeStructure, GitBranch } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 
+interface LanguageDetection {
+  language: string;
+  count: number;
+  percentage: number;
+}
+
+interface DataStructureDetection {
+  type: string;
+  classification: string;
+  confidence: number;
+  foundIn: string[];
+  keywords: string[];
+}
+
 interface AnalysisResult {
-  recommendation: 'quicksort' | 'hybrid_sorts' | 'linear_time_sorts';
+  recommendation: 'quicksort' | 'hybrid_sorts' | 'linear_time_sorts' | 'bfs_dfs' | 'introsort' | 'timsort';
   confidence: 'high' | 'medium' | 'low';
   detectedPatterns: string[];
   reasoning: string[];
   suggestedAvenue: 'ai_high_performance' | 'general_production';
+  primaryLanguage?: string;
+  languageBreakdown?: LanguageDetection[];
+  dataStructures?: DataStructureDetection[];
+  idePrompt?: string;
 }
 
 interface RecommendationDetails {
@@ -54,6 +72,39 @@ const recommendations: Record<string, RecommendationDetails> = {
       'Exceptional performance for AI and data science workloads',
     ],
     avenue: 'ai_high_performance',
+  },
+  bfs_dfs: {
+    name: 'BFS/DFS Paradigms',
+    description: 'Graph traversal algorithms for routing and navigation',
+    benefits: [
+      'Optimal for graph-based data structures',
+      'Essential for routing and navigation algorithms',
+      'Breadth-first search for shortest paths',
+      'Depth-first search for topological sorting',
+    ],
+    avenue: 'ai_high_performance',
+  },
+  introsort: {
+    name: 'Introsort (C++ STL)',
+    description: 'Hybrid algorithm combining quicksort, heapsort, and insertion sort',
+    benefits: [
+      'Native backbone for C++ std::sort()',
+      'O(n log n) worst-case guarantee',
+      'In-place with minimal overhead',
+      'Optimized for STL iterators',
+    ],
+    avenue: 'ai_high_performance',
+  },
+  timsort: {
+    name: 'Timsort',
+    description: 'Adaptive stable sort used in Python and Java',
+    benefits: [
+      'Native to Python sorted() and Java Arrays.sort()',
+      'Stable sorting guarantee',
+      'Excellent on partially sorted data',
+      'Industry-proven algorithm',
+    ],
+    avenue: 'general_production',
   },
 };
 
@@ -355,6 +406,134 @@ Confidence: ${result.confidence.toUpperCase()}
           </Card>
         </>
       )}
+
+      <Card className="bg-gradient-to-br from-accent/10 to-primary/5 border-accent/20">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <FileCode size={32} className="text-accent" weight="duotone" />
+            <div>
+              <CardTitle className="font-mono text-2xl">Enhanced CLI Analyzer</CardTitle>
+              <CardDescription className="text-base mt-1">
+                Advanced language detection, data structure scanning, and IDE integration
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-background/50 border border-border rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <FileCode className="text-accent" size={24} weight="duotone" />
+                <h3 className="font-mono font-semibold">Language Detection</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Scans file extensions to detect the primary programming language of your codebase
+              </p>
+              <div className="space-y-1 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>C++ → Introsort (STL native)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>Java/Android → Timsort</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>Python → Built-in Timsort</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>TypeScript/JavaScript → sorter_factory.ts</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-background/50 border border-border rounded-lg p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <TreeStructure className="text-accent" size={24} weight="duotone" />
+                <h3 className="font-mono font-semibold">Data Structure Scanning</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Reads source file contents to detect implemented data structures
+              </p>
+              <div className="space-y-1 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>BST/Trie → Linear-time Sorts</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>Graphs → BFS/DFS Paradigms</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">•</span>
+                  <span>Arrays/Lists → Hybrid Sorts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-background border border-accent/30 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <GitBranch className="text-accent" size={24} weight="duotone" />
+              <h3 className="font-mono font-semibold">IDE Integration Example</h3>
+            </div>
+            <div className="bg-muted/50 rounded-md p-3 space-y-2">
+              <p className="text-sm font-mono text-accent">
+                💡 IDE PROMPT:
+              </p>
+              <p className="text-sm">
+                "Detected a <span className="text-accent font-semibold">C++</span> routing algorithm utilizing <span className="text-accent font-semibold">Adjacency Lists</span>. 
+                Would you like to inject the <span className="text-accent font-semibold">Introsort O(n log n)</span> algorithm optimized for C++ STL?"
+              </p>
+              <div className="flex gap-2 mt-3">
+                <Badge className="bg-success text-success-foreground hover:bg-success/90">Accept</Badge>
+                <Badge variant="outline">Decline</Badge>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold font-mono uppercase tracking-wide text-muted-foreground flex items-center gap-2">
+              <Database size={18} className="text-accent" />
+              Feature Highlights
+            </h4>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                <span>Contextual code scanner reads source file contents</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                <span>Automated IDE prompts for code injection</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                <span>Language-specific algorithm recommendations</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                <span>Data structure pattern matching</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-accent/10 border border-accent/30 rounded-lg p-4">
+            <p className="text-sm font-semibold font-mono mb-2">
+              🚀 CLI Command
+            </p>
+            <code className="text-sm bg-background px-3 py-1.5 rounded border border-border block font-mono">
+              $ npx pylabs-sort analyze --enhanced
+            </code>
+            <p className="text-xs text-muted-foreground mt-2">
+              Run the enhanced analyzer with language detection and data structure scanning
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

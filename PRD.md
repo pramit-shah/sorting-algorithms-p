@@ -1,60 +1,37 @@
 # Planning Guide
 
-A professional code translation tool that converts TypeScript/Python sorting algorithms into optimized C++ (STL) and Java implementations. Displays side-by-side comparisons with syntax highlighting, optimization notes, and copy functionality for developers translating algorithms across languages.
+A professional code translation tool that converts TypeScript/Python sorting algorithms into optimized C++ (STL) and Java implementations, with an integrated configuration generator for sorter_factory.ts. Displays side-by-side comparisons with syntax highlighting, optimization notes, copy functionality, and an interactive web-based CLI tool for generating sorter_config.json files.
 
 **Experience Qualities**:
-1. **Educational** - Clear visual feedback helps users understand how different sorting algorithms work step-by-step
-2. **Interactive** - Users can control playback speed, input custom data, and explore different algorithm categories
-3. **Analytical** - Performance metrics and comparisons help users understand algorithm efficiency and trade-offs
+1. **Professional** - Clean, technical interface that feels like a developer tool for production environments
+2. **Interactive** - Users can configure their sorting avenue and generate configuration files with visual feedback
+3. **Educational** - Clear documentation and examples help users understand translation patterns and configuration options
 
 **Complexity Level**: Complex Application (advanced functionality, likely with multiple views)
-This application requires multiple algorithm implementations, real-time visualization state management, performance tracking, category navigation, and educational content delivery across different views.
+This application requires multiple algorithm implementations, code translation display, configuration file generation with persistent state management, multiple tab views for different content types, and integration with the sorter_factory.ts system.
 
 ## Essential Features
 
-### Algorithm Visualization
-- **Functionality**: Animate sorting algorithms in real-time with visual bar charts showing array elements being compared and swapped
-- **Purpose**: Help users understand how different sorting algorithms work through visual representation
-- **Trigger**: User selects an algorithm category and specific algorithm, then clicks "Visualize"
-- **Progression**: Select category → Choose algorithm → Configure array (random/custom) → Click visualize → Watch animation with highlighted comparisons → View completion with stats
-- **Success criteria**: Smooth animations, accurate algorithm implementations, clear visual distinction between compared/swapped elements
+### Configuration Generator
+- **Functionality**: Interactive web-based form that mimics CLI behavior, allowing users to select their "avenue" (ai_high_performance or general_production) and generate a sorter_config.json file
+- **Purpose**: Provide a user-friendly alternative to Node.js CLI for configuring sorter_factory.ts access
+- **Trigger**: User navigates to "Translations" tab and selects an avenue option
+- **Progression**: View avenue options → Select avenue (with descriptions and use cases) → Click generate → View JSON output → Download or copy configuration → Follow integration guide
+- **Success criteria**: Radio button selection, visual feedback on selection, JSON generation with timestamp and metadata, download functionality, clipboard copy, persistent selection using useKV
 
-### Algorithm Categories
-- **Functionality**: Organize algorithms into comparison sorts (bubble, quick, merge, heap), linear sorts (counting, radix, bucket), hybrid sorts (timsort, introsort), and data structures (binary search tree insertion/traversal, Dijkstra shortest path, BFS)
-- **Purpose**: Provide comprehensive algorithm education across multiple domains
-- **Trigger**: User navigates between category tabs
-- **Progression**: View categories → Select category → Browse algorithms → Read description → Start visualization
-- **Success criteria**: Clear categorization, easy navigation, descriptive information for each algorithm, specialized visualizations for trees and graphs
-
-### Playback Controls
-- **Functionality**: Control animation speed, pause/resume, step forward/backward, and reset
-- **Purpose**: Allow users to learn at their own pace and examine specific steps
-- **Trigger**: User interacts with playback control buttons
-- **Progression**: Start animation → Pause at interesting step → Step through slowly → Resume → Reset to try again
-- **Success criteria**: Responsive controls, smooth speed transitions, accurate step-by-step progression
-
-### Performance Metrics
-- **Functionality**: Display comparisons count, swaps count, time complexity, space complexity, and execution time
-- **Purpose**: Help users understand algorithm efficiency and compare performance
-- **Trigger**: Metrics update in real-time during visualization
-- **Progression**: Start algorithm → Watch metrics increment → Compare with theoretical complexity → Analyze results
-- **Success criteria**: Accurate counting, clear display, theoretical vs actual comparison
-
-### Custom Array Input
-- **Functionality**: Allow users to input custom arrays or generate random arrays of various sizes
-- **Purpose**: Enable users to test algorithms with specific data patterns or edge cases
-- **Trigger**: User clicks array configuration button
-- **Progression**: Click configure → Choose random/custom → Input values or set size → Apply → Visualize
-- **Success criteria**: Validation of inputs, proper array generation, support for various sizes
+### Code Translation Display
+- **Functionality**: Side-by-side code comparison showing TypeScript source and optimized C++/Java target implementations with syntax highlighting
+- **Purpose**: Help developers understand translation patterns and optimization techniques across languages
+- **Trigger**: User switches between C++ Introsort and Java Timsort tabs
+- **Progression**: Select translation tab → View source and target code → Read optimization notes → Copy code snippets → Review implementation examples
+- **Success criteria**: Clear syntax highlighting, readable code blocks, copy functionality, optimization annotations, usage examples
 
 ## Edge Case Handling
-- **Empty Arrays**: Display message that array needs at least 2 elements to sort
-- **Already Sorted**: Algorithm runs but shows minimal swaps/comparisons
-- **Reverse Sorted**: Demonstrates worst-case performance for certain algorithms
-- **Single Element**: Display message that array is already sorted
-- **Invalid Input**: Show validation errors for non-numeric custom inputs
-- **Large Arrays**: Automatically adjust visualization bar width and limit maximum size
-- **Animation Overflow**: Pause animation if user switches algorithms mid-execution
+- **No Avenue Selected**: Display disabled generate button and prompt user to select an avenue
+- **Invalid Configuration**: Validate JSON structure before allowing download
+- **Browser Compatibility**: Use standard Web APIs for clipboard and file download
+- **Persistent State**: Save selected avenue using useKV for session continuity
+- **Empty Translation Data**: Handle missing translation gracefully with fallback messages
 
 ## Design Direction
 The design should evoke a sense of technical precision and educational clarity, with a modern code editor aesthetic. It should feel like a professional developer tool while remaining approachable for learners. The interface should emphasize the visual animations and make performance data immediately scannable.
@@ -89,35 +66,34 @@ Animations should serve the core educational purpose while adding moments of del
 ## Component Selection
 
 - **Components**:
-  - **Tabs**: For switching between algorithm categories (Comparison, Linear, Hybrid, Data Structures)
-  - **Card**: For displaying algorithm information, metrics panel, and category sections
-  - **Button**: For playback controls (play, pause, step, reset) with variants for primary actions
-  - **Select**: For choosing specific algorithms within a category
-  - **Slider**: For controlling animation speed and array size
-  - **Dialog**: For custom array input configuration
-  - **Badge**: For displaying algorithm complexity (O(n log n), O(n), etc.)
-  - **Separator**: For dividing sections in the control panel
-  - **Progress**: For showing visualization progress
-  - **Tooltip**: For explaining metrics and controls on hover
+  - **Tabs**: For switching between Configuration Generator, C++ Introsort, and Java Timsort views
+  - **Card**: For displaying configuration forms, code blocks, avenue options, and implementation notes
+  - **Button**: For generate, download, and copy actions with variants for primary actions
+  - **RadioGroup**: For selecting avenue (ai_high_performance vs general_production)
+  - **Badge**: For displaying available functions and algorithm complexity tags
+  - **Separator**: For dividing sections in forms and content areas
+  - **Label**: For form field labels with proper accessibility
+  - **Tooltip**: For explaining configuration options and technical terms on hover
 
 - **Customizations**:
-  - **Visualization Canvas**: Custom component with animated bars using framer-motion, color-coded states (default, comparing, swapping, sorted)
-  - **Metrics Dashboard**: Custom grid layout showing real-time stats with animated counters
-  - **Algorithm Info Panel**: Custom component showing description, complexity, and use cases
+  - **CodeBlock Component**: Displays syntax-highlighted code with copy functionality and language labels
+  - **ConfigGenerator Component**: Interactive form with avenue selection, JSON preview, and download capabilities
+  - **Avenue Selection Cards**: Clickable radio cards with hover states, descriptions, function lists, and use cases
 
 - **States**:
-  - **Buttons**: Default has subtle shadow, hover lifts slightly with glow, active scales down 95%, disabled is semi-transparent
-  - **Algorithm Cards**: Hover state elevates with border glow, selected state has accent border and background tint
-  - **Visualization Bars**: Default state is muted, comparing state is accent color, swapping state is secondary color, sorted state is success green
+  - **Buttons**: Default has subtle shadow, hover lifts with accent glow, active scales down 95%, disabled is semi-transparent with reduced opacity
+  - **Avenue Cards**: Hover state adds accent border and background tint, selected state has accent border with shadow and checkmark icon
+  - **Radio Buttons**: Selected shows filled accent circle, unselected shows empty circle with border
+  - **Configuration Output**: Displays with monospace font in bordered container with copy and download actions
 
 - **Icon Selection**:
-  - Play/Pause (Play, Pause from phosphor-icons) for animation control
-  - Forward/Backward (SkipForward, SkipBack) for stepping
-  - ArrowClockwise for reset
-  - Sliders (SlidersHorizontal) for configuration
-  - Lightning for quick sort indicator
-  - ChartBar for visualization mode
-  - Code for algorithm details
+  - Terminal (Terminal from phosphor-icons) for configuration and CLI concepts
+  - Download (Download) for file download action
+  - Copy (Copy) for clipboard operations
+  - CheckCircle (CheckCircle) for selected state and success indicators
+  - Code (Code) for code-related actions and headers
+  - ArrowsLeftRight (ArrowsLeftRight) for translation/conversion concepts
+  - GearSix (GearSix) for configuration settings
 
 - **Spacing**:
   - Container padding: p-6 (24px)
@@ -125,12 +101,13 @@ Animations should serve the core educational purpose while adding moments of del
   - Section gaps: gap-6 (24px)
   - Control group gaps: gap-3 (12px)
   - Tight inline spacing: gap-2 (8px)
+  - Form field spacing: gap-4 (16px)
 
 - **Mobile**:
-  - Stack visualization above controls vertically
-  - Reduce bar count on small screens (max 20 vs 50)
-  - Convert tabs to dropdown select for categories
-  - Make metrics panel scrollable
-  - Increase touch target sizes to 44px minimum
-  - Reduce font sizes by 10% on mobile
-  - Hide advanced controls behind expandable section
+  - Stack all content vertically on mobile
+  - Full-width tabs converted to stacked buttons
+  - Reduce card padding to p-3 on mobile
+  - Make code blocks horizontally scrollable
+  - Increase button touch targets to 44px minimum
+  - Hide detailed descriptions behind expandable sections
+  - Reduce font sizes by 10% on screens < 640px

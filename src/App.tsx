@@ -3,14 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { CodeBlock } from '@/components/CodeBlock';
+import { ConfigGenerator } from '@/components/ConfigGenerator';
 import { translations } from '@/lib/translations';
-import { Code, ArrowsLeftRight, CheckCircle } from '@phosphor-icons/react';
+import { Code, ArrowsLeftRight, CheckCircle, GearSix } from '@phosphor-icons/react';
 import { Toaster } from 'sonner';
 
 function App() {
-  const [selectedTranslation, setSelectedTranslation] = useState(translations[0].id);
-
-  const currentTranslation = translations.find(t => t.id === selectedTranslation);
+  const [selectedTab, setSelectedTab] = useState('translations');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -28,64 +27,75 @@ function App() {
           </p>
         </header>
 
-        <Tabs value={selectedTranslation} onValueChange={setSelectedTranslation}>
-          <TabsList className="grid w-full grid-cols-2">
-            {translations.map((translation) => (
-              <TabsTrigger key={translation.id} value={translation.id} className="font-mono">
-                {translation.name}
-              </TabsTrigger>
-            ))}
+        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="translations" className="font-mono">
+              <Code size={18} />
+              Translations
+            </TabsTrigger>
+            <TabsTrigger value="cpp" className="font-mono">
+              C++ Introsort
+            </TabsTrigger>
+            <TabsTrigger value="java" className="font-mono">
+              Java Timsort
+            </TabsTrigger>
           </TabsList>
 
-          {translations.map((translation) => (
-            <TabsContent key={translation.id} value={translation.id} className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 font-mono">
-                    <ArrowsLeftRight className="text-accent" weight="bold" />
-                    {translation.name}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {translation.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold font-mono uppercase tracking-wide text-muted-foreground">
-                      Optimizations Applied
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {translation.optimizations.map((opt, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-sm">
-                          <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
-                          <span className="text-foreground/80">{opt}</span>
+          <TabsContent value="translations" className="space-y-6">
+            <ConfigGenerator />
+          </TabsContent>
+
+          <TabsContent value="cpp" className="space-y-6">
+            {(() => {
+              const translation = translations.find(t => t.id === 'introsort-cpp');
+              if (!translation) return null;
+              return (
+                <>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 font-mono">
+                        <ArrowsLeftRight className="text-accent" weight="bold" />
+                        {translation.name}
+                      </CardTitle>
+                      <CardDescription className="text-base">
+                        {translation.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-semibold font-mono uppercase tracking-wide text-muted-foreground">
+                          Optimizations Applied
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {translation.optimizations.map((opt, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-sm">
+                              <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                              <span className="text-foreground/80">{opt}</span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <CodeBlock
+                      code={translation.sourceCode}
+                      language={translation.sourceLanguage}
+                      title={`Source: ${translation.sourceLanguage.toUpperCase()}`}
+                    />
+                    <CodeBlock
+                      code={translation.targetCode}
+                      language={translation.targetLanguage}
+                      title={`Target: ${translation.targetLanguage.toUpperCase()}`}
+                    />
                   </div>
-                </CardContent>
-              </Card>
 
-              <div className="grid lg:grid-cols-2 gap-6">
-                <CodeBlock
-                  code={translation.sourceCode}
-                  language={translation.sourceLanguage}
-                  title={`Source: ${translation.sourceLanguage.toUpperCase()}`}
-                />
-                <CodeBlock
-                  code={translation.targetCode}
-                  language={translation.targetLanguage}
-                  title={`Target: ${translation.targetLanguage.toUpperCase()}`}
-                />
-              </div>
-
-              <Card className="bg-accent/5 border-accent/20">
-                <CardHeader>
-                  <CardTitle className="text-base font-mono">Implementation Notes</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  {translation.id === 'introsort-cpp' ? (
-                    <>
+                  <Card className="bg-accent/5 border-accent/20">
+                    <CardHeader>
+                      <CardTitle className="text-base font-mono">Implementation Notes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm">
                       <div>
                         <h4 className="font-semibold mb-1 font-mono">In-Place Algorithm</h4>
                         <p className="text-muted-foreground">
@@ -108,9 +118,64 @@ introsort(vec.begin(), vec.end());
 introsort(vec.begin(), vec.end(), std::greater<int>());`}
                         </pre>
                       </div>
-                    </>
-                  ) : (
-                    <>
+                    </CardContent>
+                  </Card>
+                </>
+              );
+            })()}
+          </TabsContent>
+
+          <TabsContent value="java" className="space-y-6">
+            {(() => {
+              const translation = translations.find(t => t.id === 'timsort-java');
+              if (!translation) return null;
+              return (
+                <>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 font-mono">
+                        <ArrowsLeftRight className="text-accent" weight="bold" />
+                        {translation.name}
+                      </CardTitle>
+                      <CardDescription className="text-base">
+                        {translation.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-semibold font-mono uppercase tracking-wide text-muted-foreground">
+                          Optimizations Applied
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {translation.optimizations.map((opt, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-sm">
+                              <CheckCircle size={16} className="text-accent flex-shrink-0 mt-0.5" weight="fill" />
+                              <span className="text-foreground/80">{opt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <CodeBlock
+                      code={translation.sourceCode}
+                      language={translation.sourceLanguage}
+                      title={`Source: ${translation.sourceLanguage.toUpperCase()}`}
+                    />
+                    <CodeBlock
+                      code={translation.targetCode}
+                      language={translation.targetLanguage}
+                      title={`Target: ${translation.targetLanguage.toUpperCase()}`}
+                    />
+                  </div>
+
+                  <Card className="bg-accent/5 border-accent/20">
+                    <CardHeader>
+                      <CardTitle className="text-base font-mono">Implementation Notes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm">
                       <div>
                         <h4 className="font-semibold mb-1 font-mono">Java Arrays.sort() Style</h4>
                         <p className="text-muted-foreground">
@@ -133,12 +198,12 @@ TimSort.sort(arr);
 TimSort.sort(arr, Comparator.reverseOrder());`}
                         </pre>
                       </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
+                    </CardContent>
+                  </Card>
+                </>
+              );
+            })()}
+          </TabsContent>
         </Tabs>
 
         <Card className="bg-card/50">

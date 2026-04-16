@@ -12,6 +12,13 @@ This application requires multiple algorithm implementations, code translation d
 
 ## Essential Features
 
+### Codebase Analyzer
+- **Functionality**: Intelligent recommendation engine that scans package.json dependencies to analyze the user's project and recommend optimal sorting algorithms based on detected patterns
+- **Purpose**: Provide data-driven, personalized recommendations for which sorting algorithms best fit the user's specific use case
+- **Trigger**: User navigates to "Analyze" tab and clicks "Analyze Codebase" button
+- **Progression**: Click analyze button → System scans package.json dependencies → Detects patterns (AI/data science libraries, memory-constrained indicators, web production frameworks, string/numeric processing) → Applies recommendation rules → Display recommendation with confidence level → Show detected patterns, key benefits, and reasoning → Output CLI-style terminal results → Suggest appropriate avenue for configuration
+- **Success criteria**: Accurate pattern detection from dependencies, intelligent recommendation based on rules (Quicksort for memory-constrained, Timsort for general production, Radix/Counting Sort for AI/data science), clear confidence indicators, detailed reasoning output, CLI-style terminal formatting, suggested avenue mapping
+
 ### Configuration Generator
 - **Functionality**: Interactive web-based form that mimics CLI behavior, allowing users to select their "avenue" (ai_high_performance or general_production) and generate a sorter_config.json file
 - **Purpose**: Provide a user-friendly alternative to Node.js CLI for configuring sorter_factory.ts access
@@ -32,6 +39,9 @@ This application requires multiple algorithm implementations, code translation d
 - **Browser Compatibility**: Use standard Web APIs for clipboard and file download
 - **Persistent State**: Save selected avenue using useKV for session continuity
 - **Empty Translation Data**: Handle missing translation gracefully with fallback messages
+- **Failed Analysis**: If package.json cannot be fetched, provide fallback recommendation with low confidence
+- **No Dependencies Detected**: Recommend general production settings as safe default
+- **Multiple Pattern Matches**: Prioritize AI/data science over memory constraints, memory constraints over general web production
 
 ## Design Direction
 The design should evoke a sense of technical precision and educational clarity, with a modern code editor aesthetic. It should feel like a professional developer tool while remaining approachable for learners. The interface should emphasize the visual animations and make performance data immediately scannable.
@@ -66,11 +76,11 @@ Animations should serve the core educational purpose while adding moments of del
 ## Component Selection
 
 - **Components**:
-  - **Tabs**: For switching between Configuration Generator, C++ Introsort, and Java Timsort views
-  - **Card**: For displaying configuration forms, code blocks, avenue options, and implementation notes
-  - **Button**: For generate, download, and copy actions with variants for primary actions
+  - **Tabs**: For switching between Codebase Analyzer, Configuration Generator, C++ Introsort, and Java Timsort views
+  - **Card**: For displaying configuration forms, code blocks, avenue options, analysis results, and implementation notes
+  - **Button**: For analyze, generate, download, and copy actions with variants for primary actions
   - **RadioGroup**: For selecting avenue (ai_high_performance vs general_production)
-  - **Badge**: For displaying available functions and algorithm complexity tags
+  - **Badge**: For displaying available functions, algorithm complexity tags, detected patterns, and confidence levels
   - **Separator**: For dividing sections in forms and content areas
   - **Label**: For form field labels with proper accessibility
   - **Tooltip**: For explaining configuration options and technical terms on hover
@@ -78,6 +88,7 @@ Animations should serve the core educational purpose while adding moments of del
 - **Customizations**:
   - **CodeBlock Component**: Displays syntax-highlighted code with copy functionality and language labels
   - **ConfigGenerator Component**: Interactive form with avenue selection, JSON preview, and download capabilities
+  - **CodebaseAnalyzer Component**: Intelligent analysis engine with pattern detection, recommendation display, and CLI-style output
   - **Avenue Selection Cards**: Clickable radio cards with hover states, descriptions, function lists, and use cases
 
 - **States**:
@@ -87,13 +98,17 @@ Animations should serve the core educational purpose while adding moments of del
   - **Configuration Output**: Displays with monospace font in bordered container with copy and download actions
 
 - **Icon Selection**:
-  - Terminal (Terminal from phosphor-icons) for configuration and CLI concepts
+  - Sparkle (Sparkle from phosphor-icons) for AI-powered analysis and intelligent features
+  - MagnifyingGlass (MagnifyingGlass) for analyze/search actions
+  - Terminal (Terminal) for configuration and CLI concepts
   - Download (Download) for file download action
   - Copy (Copy) for clipboard operations
-  - CheckCircle (CheckCircle) for selected state and success indicators
+  - CheckCircle (CheckCircle) for selected state, success indicators, and benefits
   - Code (Code) for code-related actions and headers
   - ArrowsLeftRight (ArrowsLeftRight) for translation/conversion concepts
   - GearSix (GearSix) for configuration settings
+  - Warning (Warning) for low confidence indicators
+  - Info (Info) for medium confidence indicators
 
 - **Spacing**:
   - Container padding: p-6 (24px)

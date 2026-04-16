@@ -4,12 +4,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { CodeBlock } from '@/components/CodeBlock';
 import { ConfigGenerator } from '@/components/ConfigGenerator';
+import { CodebaseAnalyzer } from '@/components/CodebaseAnalyzer';
 import { translations } from '@/lib/translations';
-import { Code, ArrowsLeftRight, CheckCircle, GearSix } from '@phosphor-icons/react';
+import { Code, ArrowsLeftRight, CheckCircle, GearSix, Sparkle } from '@phosphor-icons/react';
 import { Toaster } from 'sonner';
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState('translations');
+  const [selectedTab, setSelectedTab] = useState('analyzer');
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -28,7 +29,11 @@ function App() {
         </header>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="analyzer" className="font-mono">
+              <Sparkle size={18} />
+              Analyze
+            </TabsTrigger>
             <TabsTrigger value="translations" className="font-mono">
               <Code size={18} />
               Translations
@@ -40,6 +45,10 @@ function App() {
               Java Timsort
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="analyzer" className="space-y-6">
+            <CodebaseAnalyzer />
+          </TabsContent>
 
           <TabsContent value="translations" className="space-y-6">
             <ConfigGenerator />
